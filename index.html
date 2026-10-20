@@ -5,192 +5,464 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Robux Surprise</title>
+
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    color: white;
-    background: linear-gradient(135deg, #111827, #30205d, #101827);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: white;
+  background:
+    radial-gradient(circle at top left, #6336a8, transparent 40%),
+    linear-gradient(135deg, #090d1b, #20113e, #101d36);
+}
+
+.card {
+  width: 100%;
+  max-width: 460px;
+  padding: 28px;
+  text-align: center;
+  border-radius: 24px;
+  background: #191f35;
+  border: 1px solid #8057ff;
+  box-shadow: 0 15px 55px #0008;
+}
+
+.logo {
+  font-size: 60px;
+  animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  50% { transform: translateY(-8px) rotate(5deg); }
+}
+
+h1 {
+  font-size: 32px;
+  margin: 10px 0;
+}
+
+.subtitle {
+  color: #c8cbea;
+  line-height: 1.6;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin: 9px 0;
+  border-radius: 10px;
+  border: 1px solid #4b5273;
+  background: #0d1325;
+  color: white;
+  font-size: 16px;
+}
+
+button, .link {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.primary {
+  background: linear-gradient(100deg, #7652ff, #bd4dff);
+  color: white;
+}
+
+.secondary {
+  background: #303954;
+  color: white;
+}
+
+.roblox {
+  background: white;
+  color: #111;
+}
+
+.note {
+  color: #bbc4df;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+#result, #helpPanel, #adminPanel {
+  display: none;
+}
+
+.amount {
+  font-size: 56px;
+  color: #9affdc;
+  font-weight: 900;
+  text-shadow: 0 0 25px #64ffcf55;
+  animation: pop .7s infinite alternate;
+}
+
+@keyframes pop {
+  to { transform: scale(1.06); }
+}
+
+.disclaimer {
+  background: #0d1325;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.entry {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  background: #0d1325;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  text-align: right;
+}
+
+#confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.piece {
+  position: absolute;
+  top: -20px;
+  width: 9px;
+  height: 14px;
+  animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: .2;
   }
-  .card {
-    width: 100%;
-    max-width: 440px;
-    background: #1f2937;
-    border: 1px solid #6554c0;
-    border-radius: 22px;
-    padding: 27px;
-    text-align: center;
-    box-shadow: 0 15px 50px #0008;
-  }
-  h1 { margin-top: 0; }
-  .logo { font-size: 55px; }
-  input {
-    display: block;
-    width: 100%;
-    padding: 13px;
-    margin: 11px 0;
-    border-radius: 10px;
-    border: 1px solid #4b5563;
-    background: #111827;
-    color: white;
-    font-size: 16px;
-  }
-  button, .link {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    margin-top: 12px;
-    border: 0;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-  }
-  .primary { background: #7857ff; color: white; }
-  .roblox { background: white; color: black; }
-  .admin { background: #374151; color: white; }
-  .note { color: #cbd5e1; font-size: 12px; }
-  #result, #adminPanel { display: none; }
-  .amount {
-    font-size: 43px;
-    font-weight: bold;
-    color: #a7f3d0;
-    animation: pop 0.8s infinite alternate;
-  }
-  @keyframes pop {
-    from { transform: scale(1); }
-    to { transform: scale(1.08); }
-  }
-  .entry {
-    text-align: right;
-    background: #111827;
-    border-radius: 10px;
-    padding: 12px;
-    margin-top: 10px;
-    overflow-wrap: anywhere;
-  }
+}
 </style>
 </head>
+
 <body>
-<div class="card">
+
+<div id="confetti"></div>
+
+<main class="card">
+
   <div class="logo">💎</div>
   <h1>Robux Surprise!</h1>
-  <p>הפתעה מיוחדת לשחקני Roblox 🎮</p>
+  <p class="subtitle">
+    מוכנים להפתעה? 🎮<br>
+    בואו לבדוק מה מחכה לכם!
+  </p>
 
   <form id="form">
-    <input name="first" placeholder="שם פרטי" required maxlength="60">
-    <input name="last" placeholder="שם משפחה" required maxlength="60">
-    <input name="city" placeholder="מקום מגורים (לא חובה)" maxlength="80">
-    <input name="birth" type="date" aria-label="תאריך לידה">
-    <input name="username" placeholder="שם משתמש ב-Roblox" required maxlength="60">
-    <p class="note">הדגמה בלבד. אל תזינו סיסמאות או פרטים אישיים רגישים.</p>
-    <button class="primary" type="submit">בדיקת זכאות ✨</button>
+
+    <input
+      name="first"
+      placeholder="שם פרטי או כינוי"
+      maxlength="40"
+      required
+    >
+
+    <input
+      name="username"
+      placeholder="שם משתמש ב-Roblox (לא חובה)"
+      maxlength="40"
+    >
+
+    <p class="note">
+      זו הדגמה לא רשמית. אין כאן חלוקת Robux אמיתית.
+      אם תבחרו לשמור את הפרטים, הם יישמרו בדפדפן הזה בלבד.
+    </p>
+
+    <label class="note">
+      <input
+        id="consent"
+        type="checkbox"
+        required
+        style="width:auto"
+      >
+      אני מסכים/ה לשמור את הפרטים האלה בדפדפן לצורך ההדגמה.
+    </label>
+
+    <button class="primary" type="submit">
+      בדיקת ההפתעה ✨
+    </button>
+
   </form>
 
   <section id="result">
-    <h2>🎉</h2>
+    <div class="logo">🎉</div>
+    <h2>הפתעה!</h2>
     <div class="amount">+1,000</div>
-    <h3>קיבלתם Robux!</h3>
-    <p>פתחו את האפליקציה לקבלת הרובאקס</p>
-    <a class="link roblox"
-       href="https://www.roblox.com/"
-       target="_blank" rel="noopener">
-       פתיחת Roblox 🎮
+    <h2>ROBUX מדומים</h2>
+
+    <p>איזה מזל! 😄</p>
+
+    <div class="disclaimer">
+      זו מתיחה בלבד. לא התקבלו Robux אמיתיים.
+    </div>
+
+    <a
+      class="link roblox"
+      href="https://www.roblox.com/"
+      target="_blank"
+      rel="noopener"
+    >
+      פתיחת Roblox 🎮
     </a>
+
+    <button
+      class="secondary"
+      id="soundAgain"
+      type="button"
+    >
+      🔊 השמעת הצליל שוב
+    </button>
   </section>
 
-  <button class="admin" id="adminButton">🔒 כניסות — מנהל</button>
-  <section id="adminPanel">
-    <h3>רשומות בדפדפן הזה</h3>
-    <div id="entries"></div>
-    <button class="admin" id="clearButton">מחיקת כל הרשומות</button>
+  <hr style="border-color:#343b5b; margin:22px 0">
+
+  <button
+    class="secondary"
+    id="helpButton"
+    type="button"
+  >
+    ❓ עזרה
+  </button>
+
+  <section id="helpPanel">
+    <h3>🔐 כניסת מנהלים</h3>
+
+    <input
+      id="adminCode"
+      type="password"
+      placeholder="הכנס קוד מנהל"
+      autocomplete="off"
+    >
+
+    <button
+      class="primary"
+      id="unlockButton"
+      type="button"
+    >
+      כניסה
+    </button>
+
+    <p id="codeMessage" class="note"></p>
   </section>
-</div>
+
+  <section id="adminPanel">
+    <h3>📋 רשומות בדפדפן הזה</h3>
+    <div id="entries"></div>
+
+    <button
+      class="secondary"
+      id="clearButton"
+      type="button"
+    >
+      🗑️ מחיקת כל הרשומות
+    </button>
+  </section>
+
+  <p class="note">
+    Fan-made demo · לא אתר רשמי של Roblox
+  </p>
+
+</main>
 
 <script>
+const STORAGE_KEY = "robux_demo_entries_v3";
+
 const form = document.getElementById("form");
 const result = document.getElementById("result");
+const helpPanel = document.getElementById("helpPanel");
 const adminPanel = document.getElementById("adminPanel");
+const adminCode = document.getElementById("adminCode");
+const codeMessage = document.getElementById("codeMessage");
 const entries = document.getElementById("entries");
 
-const STORAGE_KEY = "robux_demo_entries_v1";
+let adminUnlocked = false;
 
-// אין כאן שרת: הנתונים נשמרים בדפדפן בלבד.
 function readEntries() {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    return JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || "[]"
+    );
   } catch {
     return [];
   }
 }
 
-form.addEventListener("submit", function(event) {
+function playSound() {
+  try {
+    const AudioCtx =
+      window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioCtx) return;
+
+    const ctx = new AudioCtx();
+    const notes = [523, 659, 784, 1047];
+
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const start = ctx.currentTime + i * 0.14;
+
+      osc.type = "sine";
+      osc.frequency.value = freq;
+
+      gain.gain.setValueAtTime(0.001, start);
+      gain.gain.exponentialRampToValueAtTime(
+        0.13, start + 0.03
+      );
+      gain.gain.exponentialRampToValueAtTime(
+        0.001, start + 0.22
+      );
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(start);
+      osc.stop(start + 0.24);
+    });
+
+    setTimeout(() => ctx.close(), 1300);
+  } catch {}
+}
+
+function showConfetti() {
+  const host = document.getElementById("confetti");
+  const colors = [
+    "#a78bfa", "#67e8f9", "#f0abfc",
+    "#86efac", "#fde68a"
+  ];
+
+  host.replaceChildren();
+
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement("div");
+    piece.className = "piece";
+    piece.style.left = Math.random() * 100 + "%";
+    piece.style.background =
+      colors[i % colors.length];
+    piece.style.animationDelay =
+      Math.random() * 0.8 + "s";
+
+    host.appendChild(piece);
+  }
+
+  setTimeout(() => host.replaceChildren(), 4000);
+}
+
+form.addEventListener("submit", event => {
   event.preventDefault();
 
+  if (!document.getElementById("consent").checked) {
+    return;
+  }
+
   const data = new FormData(form);
+
   const record = {
-    first: data.get("first"),
-    last: data.get("last"),
-    city: data.get("city"),
-    birth: data.get("birth"),
+    name: data.get("first"),
     username: data.get("username"),
-    date: new Date().toLocaleString("he-IL")
+    savedAt: new Date().toLocaleString("he-IL")
   };
 
   try {
-    const all = readEntries();
-    all.push(record);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
-    form.hidden = true;
-    result.style.display = "block";
+    const records = readEntries();
+    records.push(record);
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(records)
+    );
   } catch {
-    alert("לא ניתן לשמור בדפדפן. בדקו את הגדרות האחסון.");
+    alert("הדפדפן לא הצליח לשמור את הרשומה.");
   }
+
+  form.hidden = true;
+  result.style.display = "block";
+
+  showConfetti();
+  playSound();
 });
 
-document.getElementById("adminButton").addEventListener("click", function() {
-  // תצוגת מנהל מקומית בלבד, לא מנגנון אבטחה אמיתי.
-  const records = readEntries();
+document.getElementById("soundAgain")
+  .addEventListener("click", playSound);
+
+document.getElementById("helpButton")
+  .addEventListener("click", () => {
+    helpPanel.style.display =
+      helpPanel.style.display === "block"
+        ? "none"
+        : "block";
+  });
+
+document.getElementById("unlockButton")
+  .addEventListener("click", () => {
+
+    if (adminCode.value === "2015") {
+      adminUnlocked = true;
+      codeMessage.textContent = "הקוד נכון! ✅";
+      adminPanel.style.display = "block";
+      renderEntries();
+    } else {
+      adminUnlocked = false;
+      codeMessage.textContent = "קוד שגוי! ❌";
+      adminPanel.style.display = "none";
+    }
+  });
+
+function renderEntries() {
   entries.replaceChildren();
 
-  if (!records.length) {
-    entries.textContent = "אין רשומות שמורות.";
+  const records = readEntries();
+
+  if (records.length === 0) {
+    entries.textContent = "אין רשומות בדפדפן הזה.";
+    return;
   }
 
-  records.forEach((record) => {
+  records.forEach(record => {
     const box = document.createElement("div");
     box.className = "entry";
 
-    const lines = [
-      "שם: " + record.first + " " + record.last,
-      "מגורים: " + (record.city || "לא צוין"),
-      "תאריך לידה: " + (record.birth || "לא צוין"),
-      "שם משתמש: " + record.username,
-      "תאריך כניסה: " + record.date
-    ];
+    box.textContent = [
+      "שם: " + record.name,
+      "שם משתמש: " + (record.username || "לא צוין"),
+      "נשמר בתאריך: " + record.savedAt
+    ].join("\n");
 
-    box.textContent = lines.join("\n");
-    box.style.whiteSpace = "pre-line";
     entries.appendChild(box);
   });
+}
 
-  adminPanel.style.display =
-    adminPanel.style.display === "block" ? "none" : "block";
-});
+document.getElementById("clearButton")
+  .addEventListener("click", () => {
 
-document.getElementById("clearButton").addEventListener("click", function() {
-  if (confirm("למחוק את כל הרשומות מהמכשיר הזה?")) {
-    localStorage.removeItem(STORAGE_KEY);
-    entries.textContent = "כל הרשומות נמחקו.";
-  }
-});
+    if (!adminUnlocked) return;
+
+    if (confirm("למחוק את כל הרשומות בדפדפן הזה?")) {
+      localStorage.removeItem(STORAGE_KEY);
+      renderEntries();
+    }
+  });
 </script>
+
 </body>
 </html>
