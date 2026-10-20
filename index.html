@@ -12,53 +12,47 @@
 body {
   margin: 0;
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 20px;
   font-family: Arial, sans-serif;
   color: white;
   background:
     radial-gradient(circle at top left, #6336a8, transparent 40%),
-    linear-gradient(135deg, #090d1b, #20113e, #101d36);
+    linear-gradient(135deg, #111827, #30205d, #101827);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
 .card {
   width: 100%;
-  max-width: 460px;
-  padding: 28px;
+  max-width: 440px;
+  background: #1f2937;
+  border: 1px solid #8065ff;
+  border-radius: 22px;
+  padding: 27px;
   text-align: center;
-  border-radius: 24px;
-  background: #191f35;
-  border: 1px solid #8057ff;
-  box-shadow: 0 15px 55px #0008;
+  box-shadow: 0 15px 50px #0008;
 }
 
 .logo {
-  font-size: 60px;
-  animation: float 2s ease-in-out infinite;
+  font-size: 55px;
+  animation: float 2s infinite ease-in-out;
 }
 
 @keyframes float {
   50% { transform: translateY(-8px) rotate(5deg); }
 }
 
-h1 {
-  font-size: 32px;
-  margin: 10px 0;
-}
-
-.subtitle {
-  color: #c8cbea;
-  line-height: 1.6;
-}
+h1 { margin-top: 0; }
 
 input {
+  display: block;
   width: 100%;
-  padding: 14px;
-  margin: 9px 0;
+  padding: 13px;
+  margin: 11px 0;
   border-radius: 10px;
-  border: 1px solid #4b5273;
-  background: #0d1325;
+  border: 1px solid #4b5563;
+  background: #111827;
   color: white;
   font-size: 16px;
 }
@@ -72,63 +66,56 @@ button, .link {
   border-radius: 10px;
   font-size: 16px;
   font-weight: bold;
-  text-decoration: none;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .primary {
-  background: linear-gradient(100deg, #7652ff, #bd4dff);
-  color: white;
-}
-
-.secondary {
-  background: #303954;
+  background: linear-gradient(100deg, #7857ff, #b34dff);
   color: white;
 }
 
 .roblox {
   background: white;
-  color: #111;
+  color: black;
+}
+
+.admin {
+  background: #374151;
+  color: white;
 }
 
 .note {
-  color: #bbc4df;
+  color: #cbd5e1;
   font-size: 12px;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-#result, #helpPanel, #adminPanel {
+#result, #adminPanel, #helpPanel {
   display: none;
 }
 
 .amount {
-  font-size: 56px;
-  color: #9affdc;
-  font-weight: 900;
-  text-shadow: 0 0 25px #64ffcf55;
-  animation: pop .7s infinite alternate;
+  font-size: 43px;
+  font-weight: bold;
+  color: #a7f3d0;
+  text-shadow: 0 0 20px #a7f3d055;
+  animation: pop 0.8s infinite alternate;
 }
 
 @keyframes pop {
-  to { transform: scale(1.06); }
-}
-
-.disclaimer {
-  background: #0d1325;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 13px;
-  line-height: 1.5;
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
 }
 
 .entry {
+  text-align: right;
   white-space: pre-line;
   overflow-wrap: anywhere;
-  background: #0d1325;
+  background: #111827;
+  border-radius: 10px;
   padding: 12px;
   margin-top: 10px;
-  border-radius: 10px;
-  text-align: right;
 }
 
 #confetti {
@@ -149,143 +136,77 @@ button, .link {
 @keyframes fall {
   to {
     transform: translateY(110vh) rotate(720deg);
-    opacity: .2;
+    opacity: 0;
   }
 }
 </style>
 </head>
 
 <body>
-
 <div id="confetti"></div>
 
 <main class="card">
-
   <div class="logo">💎</div>
   <h1>Robux Surprise!</h1>
-  <p class="subtitle">
-    מוכנים להפתעה? 🎮<br>
-    בואו לבדוק מה מחכה לכם!
-  </p>
+  <p>הפתעה מיוחדת לשחקני Roblox 🎮</p>
 
   <form id="form">
-
-    <input
-      name="first"
-      placeholder="שם פרטי או כינוי"
-      maxlength="40"
-      required
-    >
-
-    <input
-      name="username"
-      placeholder="שם משתמש ב-Roblox (לא חובה)"
-      maxlength="40"
-    >
-
-    <p class="note">
-      זו הדגמה לא רשמית. אין כאן חלוקת Robux אמיתית.
-      אם תבחרו לשמור את הפרטים, הם יישמרו בדפדפן הזה בלבד.
-    </p>
+    <input name="first" placeholder="שם פרטי" required maxlength="60">
+    <input name="last" placeholder="שם משפחה" required maxlength="60">
+    <input name="city" placeholder="מקום מגורים (לא חובה)" maxlength="80">
+    <input name="birth" type="date" aria-label="תאריך לידה">
+    <input name="username" placeholder="שם משתמש ב-Roblox" required maxlength="60">
 
     <label class="note">
-      <input
-        id="consent"
-        type="checkbox"
-        required
-        style="width:auto"
-      >
-      אני מסכים/ה לשמור את הפרטים האלה בדפדפן לצורך ההדגמה.
+      <input id="consent" type="checkbox" required style="width:auto;display:inline">
+      אני מסכים/ה לשמירת הפרטים בדפדפן הזה.
     </label>
 
     <button class="primary" type="submit">
       בדיקת ההפתעה ✨
     </button>
-
   </form>
 
   <section id="result">
-    <div class="logo">🎉</div>
-    <h2>הפתעה!</h2>
+    <h2>🎉</h2>
     <div class="amount">+1,000</div>
-    <h2>ROBUX מדומים</h2>
+    <p>פתחו את האפליקציה Roblox לקבלת הרובאקס</p>
 
-    <p>איזה מזל! 😄</p>
-
-    <div class="disclaimer">
-      זו מתיחה בלבד. לא התקבלו Robux אמיתיים.
-    </div>
-
-    <a
-      class="link roblox"
-      href="https://www.roblox.com/"
-      target="_blank"
-      rel="noopener"
-    >
+    <a class="link roblox"
+       href="https://www.roblox.com/"
+       target="_blank" rel="noopener">
       פתיחת Roblox 🎮
     </a>
 
-    <button
-      class="secondary"
-      id="soundAgain"
-      type="button"
-    >
+    <button class="admin" id="soundAgain" type="button">
       🔊 השמעת הצליל שוב
     </button>
   </section>
 
-  <hr style="border-color:#343b5b; margin:22px 0">
-
-  <button
-    class="secondary"
-    id="helpButton"
-    type="button"
-  >
+  <button class="admin" id="helpButton" type="button">
     ❓ עזרה
   </button>
 
   <section id="helpPanel">
     <h3>🔐 כניסת מנהלים</h3>
-
-    <input
-      id="adminCode"
-      type="password"
-      placeholder="הכנס קוד מנהל"
-      autocomplete="off"
-    >
-
-    <button
-      class="primary"
-      id="unlockButton"
-      type="button"
-    >
-      כניסה
-    </button>
-
+    <input id="adminCode" type="password" placeholder="הכנס קוד מנהל" autocomplete="off">
+    <button class="primary" id="unlockButton" type="button">כניסה</button>
     <p id="codeMessage" class="note"></p>
   </section>
 
   <section id="adminPanel">
-    <h3>📋 רשומות בדפדפן הזה</h3>
+    <h3>📋 כניסות שנשמרו בדפדפן הזה</h3>
     <div id="entries"></div>
-
-    <button
-      class="secondary"
-      id="clearButton"
-      type="button"
-    >
-      🗑️ מחיקת כל הרשומות
+    <button class="admin" id="clearButton" type="button">
+      מחיקת כל הרשומות
     </button>
   </section>
 
-  <p class="note">
-    Fan-made demo · לא אתר רשמי של Roblox
-  </p>
-
+  <p class="note">Fan-made demo</p>
 </main>
 
 <script>
-const STORAGE_KEY = "robux_demo_entries_v3";
+const STORAGE_KEY = "robux_demo_entries_v1";
 
 const form = document.getElementById("form");
 const result = document.getElementById("result");
@@ -299,9 +220,7 @@ let adminUnlocked = false;
 
 function readEntries() {
   try {
-    return JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
-    );
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
   } catch {
     return [];
   }
@@ -309,33 +228,23 @@ function readEntries() {
 
 function playSound() {
   try {
-    const AudioCtx =
-      window.AudioContext || window.webkitAudioContext;
-
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
     if (!AudioCtx) return;
 
     const ctx = new AudioCtx();
-    const notes = [523, 659, 784, 1047];
-
-    notes.forEach((freq, i) => {
+    [523, 659, 784, 1047].forEach((freq, i) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       const start = ctx.currentTime + i * 0.14;
 
       osc.type = "sine";
       osc.frequency.value = freq;
-
       gain.gain.setValueAtTime(0.001, start);
-      gain.gain.exponentialRampToValueAtTime(
-        0.13, start + 0.03
-      );
-      gain.gain.exponentialRampToValueAtTime(
-        0.001, start + 0.22
-      );
+      gain.gain.exponentialRampToValueAtTime(0.12, start + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, start + 0.22);
 
       osc.connect(gain);
       gain.connect(ctx.destination);
-
       osc.start(start);
       osc.stop(start + 0.24);
     });
@@ -344,24 +253,17 @@ function playSound() {
   } catch {}
 }
 
-function showConfetti() {
+function confetti() {
   const host = document.getElementById("confetti");
-  const colors = [
-    "#a78bfa", "#67e8f9", "#f0abfc",
-    "#86efac", "#fde68a"
-  ];
-
+  const colors = ["#a78bfa", "#67e8f9", "#f0abfc", "#86efac", "#fde68a"];
   host.replaceChildren();
 
   for (let i = 0; i < 60; i++) {
     const piece = document.createElement("div");
     piece.className = "piece";
     piece.style.left = Math.random() * 100 + "%";
-    piece.style.background =
-      colors[i % colors.length];
-    piece.style.animationDelay =
-      Math.random() * 0.8 + "s";
-
+    piece.style.background = colors[i % colors.length];
+    piece.style.animationDelay = Math.random() * 0.7 + "s";
     host.appendChild(piece);
   }
 
@@ -371,98 +273,83 @@ function showConfetti() {
 form.addEventListener("submit", event => {
   event.preventDefault();
 
-  if (!document.getElementById("consent").checked) {
-    return;
-  }
+  if (!document.getElementById("consent").checked) return;
 
   const data = new FormData(form);
-
   const record = {
-    name: data.get("first"),
+    first: data.get("first"),
+    last: data.get("last"),
+    city: data.get("city"),
+    birth: data.get("birth"),
     username: data.get("username"),
-    savedAt: new Date().toLocaleString("he-IL")
+    date: new Date().toLocaleString("he-IL")
   };
 
   try {
-    const records = readEntries();
-    records.push(record);
-
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(records)
-    );
+    const all = readEntries();
+    all.push(record);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
   } catch {
-    alert("הדפדפן לא הצליח לשמור את הרשומה.");
+    alert("לא ניתן לשמור בדפדפן הזה.");
   }
 
   form.hidden = true;
   result.style.display = "block";
-
-  showConfetti();
+  confetti();
   playSound();
 });
 
-document.getElementById("soundAgain")
-  .addEventListener("click", playSound);
+document.getElementById("soundAgain").addEventListener("click", playSound);
 
-document.getElementById("helpButton")
-  .addEventListener("click", () => {
-    helpPanel.style.display =
-      helpPanel.style.display === "block"
-        ? "none"
-        : "block";
-  });
+document.getElementById("helpButton").addEventListener("click", () => {
+  helpPanel.style.display =
+    helpPanel.style.display === "block" ? "none" : "block";
+});
 
-document.getElementById("unlockButton")
-  .addEventListener("click", () => {
-
-    if (adminCode.value === "2015") {
-      adminUnlocked = true;
-      codeMessage.textContent = "הקוד נכון! ✅";
-      adminPanel.style.display = "block";
-      renderEntries();
-    } else {
-      adminUnlocked = false;
-      codeMessage.textContent = "קוד שגוי! ❌";
-      adminPanel.style.display = "none";
-    }
-  });
+document.getElementById("unlockButton").addEventListener("click", () => {
+  if (adminCode.value === "2015") {
+    adminUnlocked = true;
+    codeMessage.textContent = "הקוד נכון! ✅";
+    adminPanel.style.display = "block";
+    renderEntries();
+  } else {
+    adminUnlocked = false;
+    codeMessage.textContent = "קוד שגוי! ❌";
+    adminPanel.style.display = "none";
+  }
+});
 
 function renderEntries() {
   entries.replaceChildren();
+  const all = readEntries();
 
-  const records = readEntries();
-
-  if (records.length === 0) {
-    entries.textContent = "אין רשומות בדפדפן הזה.";
+  if (!all.length) {
+    entries.textContent = "אין רשומות שמורות בדפדפן הזה.";
     return;
   }
 
-  records.forEach(record => {
+  all.forEach(record => {
     const box = document.createElement("div");
     box.className = "entry";
-
     box.textContent = [
-      "שם: " + record.name,
-      "שם משתמש: " + (record.username || "לא צוין"),
-      "נשמר בתאריך: " + record.savedAt
+      "שם: " + record.first + " " + record.last,
+      "מגורים: " + (record.city || "לא צוין"),
+      "תאריך לידה: " + (record.birth || "לא צוין"),
+      "שם משתמש: " + record.username,
+      "תאריך: " + record.date
     ].join("\n");
-
     entries.appendChild(box);
   });
 }
 
-document.getElementById("clearButton")
-  .addEventListener("click", () => {
+document.getElementById("clearButton").addEventListener("click", () => {
+  if (!adminUnlocked) return;
 
-    if (!adminUnlocked) return;
-
-    if (confirm("למחוק את כל הרשומות בדפדפן הזה?")) {
-      localStorage.removeItem(STORAGE_KEY);
-      renderEntries();
-    }
-  });
+  if (confirm("למחוק את כל הרשומות בדפדפן הזה?")) {
+    localStorage.removeItem(STORAGE_KEY);
+    renderEntries();
+  }
+});
 </script>
-
 </body>
 </html>
