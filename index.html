@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robux Surprise</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: linear-gradient(135deg, #111827, #30205d, #101827);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .card {
+    width: 100%;
+    max-width: 440px;
+    background: #1f2937;
+    border: 1px solid #6554c0;
+    border-radius: 22px;
+    padding: 27px;
+    text-align: center;
+    box-shadow: 0 15px 50px #0008;
+  }
+  h1 { margin-top: 0; }
+  .logo { font-size: 55px; }
+  input {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    margin: 11px 0;
+    border-radius: 10px;
+    border: 1px solid #4b5563;
+    background: #111827;
+    color: white;
+    font-size: 16px;
+  }
+  button, .link {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border: 0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .primary { background: #7857ff; color: white; }
+  .roblox { background: white; color: black; }
+  .admin { background: #374151; color: white; }
+  .note { color: #cbd5e1; font-size: 12px; }
+  #result, #adminPanel { display: none; }
+  .amount {
+    font-size: 43px;
+    font-weight: bold;
+    color: #a7f3d0;
+    animation: pop 0.8s infinite alternate;
+  }
+  @keyframes pop {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+  }
+  .entry {
+    text-align: right;
+    background: #111827;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 10px;
+    overflow-wrap: anywhere;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">💎</div>
+  <h1>Robux Surprise!</h1>
+  <p>הפתעה מיוחדת לשחקני Roblox 🎮</p>
+
+  <form id="form">
+    <input name="first" placeholder="שם פרטי" required maxlength="60">
+    <input name="last" placeholder="שם משפחה" required maxlength="60">
+    <input name="city" placeholder="מקום מגורים (לא חובה)" maxlength="80">
+    <input name="birth" type="date" aria-label="תאריך לידה">
+    <input name="username" placeholder="שם משתמש ב-Roblox" required maxlength="60">
+    <p class="note">הדגמה בלבד. אל תזינו סיסמאות או פרטים אישיים רגישים.</p>
+    <button class="primary" type="submit">בדיקת זכאות ✨</button>
+  </form>
+
+  <section id="result">
+    <h2>🎉</h2>
+    <div class="amount">+1,000</div>
+    <h3>קיבלתם Robux!</h3>
+    <p>פתחו את האפליקציה לקבלת הרובאקס</p>
+    <a class="link roblox"
+       href="https://www.roblox.com/"
+       target="_blank" rel="noopener">
+       פתיחת Roblox 🎮
+    </a>
+  </section>
+
+  <button class="admin" id="adminButton">🔒 כניסות — מנהל</button>
+  <section id="adminPanel">
+    <h3>רשומות בדפדפן הזה</h3>
+    <div id="entries"></div>
+    <button class="admin" id="clearButton">מחיקת כל הרשומות</button>
+  </section>
+</div>
+
+<script>
+const form = document.getElementById("form");
+const result = document.getElementById("result");
+const adminPanel = document.getElementById("adminPanel");
+const entries = document.getElementById("entries");
+
+const STORAGE_KEY = "robux_demo_entries_v1";
+
+// אין כאן שרת: הנתונים נשמרים בדפדפן בלבד.
+function readEntries() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const data = new FormData(form);
+  const record = {
+    first: data.get("first"),
+    last: data.get("last"),
+    city: data.get("city"),
+    birth: data.get("birth"),
+    username: data.get("username"),
+    date: new Date().toLocaleString("he-IL")
+  };
+
+  try {
+    const all = readEntries();
+    all.push(record);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+    form.hidden = true;
+    result.style.display = "block";
+  } catch {
+    alert("לא ניתן לשמור בדפדפן. בדקו את הגדרות האחסון.");
+  }
+});
+
+document.getElementById("adminButton").addEventListener("click", function() {
+  // תצוגת מנהל מקומית בלבד, לא מנגנון אבטחה אמיתי.
+  const records = readEntries();
+  entries.replaceChildren();
+
+  if (!records.length) {
+    entries.textContent = "אין רשומות שמורות.";
+  }
+
+  records.forEach((record) => {
+    const box = document.createElement("div");
+    box.className = "entry";
+
+    const lines = [
+      "שם: " + record.first + " " + record.last,
+      "מגורים: " + (record.city || "לא צוין"),
+      "תאריך לידה: " + (record.birth || "לא צוין"),
+      "שם משתמש: " + record.username,
+      "תאריך כניסה: " + record.date
+    ];
+
+    box.textContent = lines.join("\n");
+    box.style.whiteSpace = "pre-line";
+    entries.appendChild(box);
+  });
+
+  adminPanel.style.display =
+    adminPanel.style.display === "block" ? "none" : "block";
+});
+
+document.getElementById("clearButton").addEventListener("click", function() {
+  if (confirm("למחוק את כל הרשומות מהמכשיר הזה?")) {
+    localStorage.removeItem(STORAGE_KEY);
+    entries.textContent = "כל הרשומות נמחקו.";
+  }
+});
+</script>
+</body>
+</html>
